@@ -1,23 +1,32 @@
-const express = require("express");
-const mongoose = require("mongoose");
+import express from "express";
+import { connect } from "mongoose";
+import { urlencoded, json } from "body-parser";
+import passport, { initialize } from "passport";
 
-const users = require("./routes/api/users");
-const profile = require("./routes/api/profile");
-const posts = require("./routes/api/posts");
+import users from "./routes/api/users";
+import profile from "./routes/api/profile";
+import posts from "./routes/api/posts";
 
 const app = express();
 
-const db = require("./config/keys").mongoURI;
+// Body parser middleware
+app.use(urlencoded({ extended: false }));
+app.use(json());
+// DB config
+import { mongoURI as db } from "./config/keys";
 
-mongoose
-  .connect(db)
+// Connect to MongoDB
+connect(db)
   .then(() => console.log("db connected"))
   .catch((err) => console.log(err));
 
-app.get("/", (req, res) => {
-  res.send("Hello");
-});
+// Passport middleware
+app.use(initialize());
 
+// Passport config
+// Passport config
+require("./config/passport").default(passport);
+// Use routes
 app.use("/api/users", users);
 app.use("/api/profile", profile);
 app.use("/api/posts", posts);

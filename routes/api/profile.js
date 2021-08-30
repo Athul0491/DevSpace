@@ -1,6 +1,6 @@
-const express = require("express");
-const router = express.Router();
+import { Router } from "express";
+const router = Router();
 
 router.get("/test", (req, res) => res.json({ msg: "profile works" }));
 
-module.exports = router;
+export default router;
