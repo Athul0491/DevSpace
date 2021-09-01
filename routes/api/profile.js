@@ -1,6 +1,9 @@
-import { Router } from "express";
-const router = Router();
+const express = require("express");
+const router = express.Router();
 
-router.get("/test", (req, res) => res.json({ msg: "profile works" }));
+// @route   GET api/profile/test
+// @desc    Tests profile route
+// @access  Public
+router.get("/test", (req, res) => res.json({ msg: "Profile Works" }));
 
-export default router;
+module.exports = router;
