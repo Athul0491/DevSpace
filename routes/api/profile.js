@@ -3,7 +3,12 @@ const router = express.Router();
 const passport = require("passport");
 const mongoose = require("mongoose");
 
+// Load Profile Validation
+const validateProfileInput = require("../../validation/profile");
+
+// Load Profile model
 const User = require("../../models/User");
+//Load User model
 const Profile = require("../../models/Profile");
 
 // @route   GET api/profile/test
@@ -20,6 +25,7 @@ router.get(
   (req, res) => {
     const errors = {};
     Profile.findOne({ user: req.user.id })
+      .populate("user", ["name", "avatar"])
       .then((profile) => {
         if (!profile) {
           errors.noprofile = "There is no profile for this user";
@@ -34,10 +40,15 @@ router.get(
 // @route   POST api/profile
 // @desc    Create or edit user profile
 // @access  Private
-router.get(
+router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    const { errors, isValid } = validateProfileInput(req.body);
+    // Check Validation
+    if (!isValid) {
+      return res.status(400).json(errors); // Returns any errors with 400 status
+    }
     // Get Fields
     const profileFields = {};
     profileFields.user = req.user.id;
@@ -64,7 +75,7 @@ router.get(
     Profile.findOne({ user: req.user.id }).then((profile) => {
       if (profile) {
         //update
-        Profile.findByIdAndUpdate(
+        Profile.findOneAndUpdate(
           { user: req.user.id },
           { $set: profileFields },
           { new: true }
@@ -72,18 +83,19 @@ router.get(
       } else {
         // create
         // check if handle exists
-        Profile.findOne({ handle: ProfileFields.handle }).then((profile) => {
+        Profile.findOne({ handle: profileFields.handle }).then((profile) => {
           if (profile) {
             errors.handle = "This handle already exists";
             res.status(400).json(errors);
           }
-        });
 
-        // Save profile
-        new Profile(profileFields).save().then((profile) => res.json(profile));
+          // Save profile
+          new Profile(profileFields)
+            .save()
+            .then((profile) => res.json(profile));
+        });
       }
     });
   }
 );
-module.exports = router;
 module.exports = router;
