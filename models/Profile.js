@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-// Create UserSchema
+// Create ProfileSchema
 const ProfileSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
