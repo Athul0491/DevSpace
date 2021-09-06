@@ -5,6 +5,10 @@ const mongoose = require("mongoose");
 
 // Load Profile Validation
 const validateProfileInput = require("../../validation/profile");
+// Load Experience Validation
+const validateExperienceInput = require("../../validation/experience");
+// Load Education Validation
+const validateEducationInput = require("../../validation/education");
 
 // Load Profile model
 const User = require("../../models/User");
@@ -37,6 +41,24 @@ router.get(
   }
 );
 
+// @route   GET api/profile/all
+// @desc    Get all profiles
+// @access  Public
+router.get("/all", (req, res) => {
+  const errors = {};
+
+  Profile.find()
+    .populate("user", ["name", "avatar"])
+    .then((profile) => {
+      if (!profile) {
+        errors.noprofile = "There is no profile";
+        return res.status(404).json(errors);
+      }
+      res.json(profile);
+    })
+    .catch((err) => res.status(404).json({ profile: "There are no profiles" }));
+});
+
 // @route   GET api/profile/handle/:handle
 // @desc    Get profile by handle
 // @access  Public
@@ -47,7 +69,7 @@ router.get("/handle/:handle", (req, res) => {
     .populate("user", ["name", "avatar"])
     .then((profile) => {
       if (!profile) {
-        errors.noprofile = "There is no profile for this user";
+        errors.noprofile = "There is no profile for this handle";
         return res.status(404).json(errors);
       }
       res.json(profile);
@@ -131,6 +153,66 @@ router.post(
             .then((profile) => res.json(profile));
         });
       }
+    });
+  }
+);
+
+// @route   POST api/profile/experience
+// @desc    Add experience to profile
+// @access  Private
+router.post(
+  "/experience",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { errors, isValid } = validateExperienceInput(req.body);
+    // Check Validation
+    if (!isValid) {
+      return res.status(400).json(errors); // Returns any errors with 400 status
+    }
+    Profile.findOne({ user: req.user.id }).then((profile) => {
+      const newExp = {
+        title: req.body.title,
+        company: req.body.company,
+        location: req.body.location,
+        to: req.body.to,
+        from: req.body.from,
+        current: req.body.current,
+        description: req.body.description,
+      };
+
+      // add to array exp
+      profile.experience.unshift(newExp);
+      profile.save().then((profile) => res.json(profile));
+    });
+  }
+);
+
+// @route   POST api/profile/education
+// @desc    Add education to profile
+// @access  Private
+router.post(
+  "/education",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { errors, isValid } = validateEducationInput(req.body);
+    // Check Validation
+    if (!isValid) {
+      return res.status(400).json(errors); // Returns any errors with 400 status
+    }
+    Profile.findOne({ user: req.user.id }).then((profile) => {
+      const newExp = {
+        school: req.body.school,
+        degree: req.body.degree,
+        fieldofstudy: req.body.fieldofstudy,
+        to: req.body.to,
+        from: req.body.from,
+        current: req.body.current,
+        description: req.body.description,
+      };
+
+      // add to array exp
+      profile.education.unshift(newExp);
+      profile.save().then((profile) => res.json(profile));
     });
   }
 );
