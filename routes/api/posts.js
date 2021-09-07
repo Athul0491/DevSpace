@@ -2,6 +2,13 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const passport = require("passport");
+
+// Load Post model
+const Post = require("../../models/Post");
+
+// Load Post Validation
+const validatePostInput = require("../../validation/post");
+
 // @route   GET api/posts/test
 // @desc    Tests post route
 // @access  Public
@@ -14,7 +21,11 @@ router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    const errors = {};
+    const { errors, isValid } = validatePostInput(req.body);
+    // Check Validation
+    if (!isValid) {
+      return res.status(400).json(errors); // Returns any errors with 400 status
+    }
     const newPost = new Post({
       name: req.body.name,
       text: req.body.text,

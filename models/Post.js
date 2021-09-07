@@ -8,7 +8,7 @@ const PostSchema = new Schema({
     ref: "users",
   },
   text: {
-    type: string,
+    type: String,
     required: true,
   },
   name: {
@@ -32,7 +32,7 @@ const PostSchema = new Schema({
         ref: "users",
       },
       text: {
-        type: string,
+        type: String,
         required: true,
       },
       name: {
