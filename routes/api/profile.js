@@ -216,4 +216,82 @@ router.post(
     });
   }
 );
+
+// @route   POST api/profile/experience
+// @desc    Add experience to profile
+// @access  Private
+router.post(
+  "/experience",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { errors, isValid } = validateExperienceInput(req.body);
+    // Check Validation
+    if (!isValid) {
+      return res.status(400).json(errors); // Returns any errors with 400 status
+    }
+    Profile.findOne({ user: req.user.id }).then((profile) => {
+      const newExp = {
+        title: req.body.title,
+        company: req.body.company,
+        location: req.body.location,
+        to: req.body.to,
+        from: req.body.from,
+        current: req.body.current,
+        description: req.body.description,
+      };
+
+      // add to array exp
+      profile.experience.unshift(newExp);
+      profile.save().then((profile) => res.json(profile));
+    });
+  }
+);
+
+// @route   DELETE api/profile/experience/:exp_id
+// @desc    delete experience from profile
+// @access  Private
+router.delete(
+  "/experience/:exp_id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Profile.findOne({ user: req.user.id })
+      .then((profile) => {
+        //Get remove index
+        const removeIndex = profile.experience
+          .map((item) => item.id)
+          .indexOf(req.params.exp_id);
+
+        // Splice out of array
+        profile.experience.splice(removeIndex, 1);
+
+        //save
+        profile.save().then((profile) => res.json(profile));
+      })
+      .catch((err) => res.status(400).json(err));
+  }
+);
+
+// @route   DELETE api/profile/education/:edu_id
+// @desc    delete education from profile
+// @access  Private
+router.delete(
+  "/education/:edu_id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Profile.findOne({ user: req.user.id })
+      .then((profile) => {
+        //Get remove index
+        const removeIndex = profile.education
+          .map((item) => item.id)
+          .indexOf(req.params.exp_id);
+
+        // Splice out of array
+        profile.education.splice(removeIndex, 1);
+
+        //save
+        profile.save().then((profile) => res.json(profile));
+      })
+      .catch((err) => res.status(400).json(err));
+  }
+);
 module.exports = router;
