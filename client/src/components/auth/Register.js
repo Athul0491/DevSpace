@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+
 import axios from "axios";
 import classnames from "classnames";
+import { connect } from "react-redux";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -8,6 +11,12 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
   const [errors, setErrors] = useState({});
+
+  // useEffect(() => {
+  //   if (errors) {
+  //     setErrors({ errors });
+  //   }
+  // });
 
   const changeName = (e) => {
     setName(e.target.value);
@@ -31,19 +40,25 @@ const Register = () => {
       password2,
     };
 
+    // registerUser(newUser);
+
     axios
       .post("api/users/register", newUser)
-      .then((res) => console.log(res.data))
+      .then((res) => {
+        console.log(res.data);
+      })
       .catch((err) => setErrors(err.response.data));
   };
   // const errors = errors;
+  // const { user } = auth;
   return (
     <div className="register">
+      {/* {user ? user.name : null} */}
       <div className="container">
         <div className="row">
           <div className="col-md-8 m-auto">
             <h1 className="display-4 text-center">Sign Up</h1>
-            <p className="lead text-center">Create your DevConnector account</p>
+            <p className="lead text-center">Create your DevSpace account</p>
             <form noValidate onSubmit={handleSubmit}>
               <div className="form-group">
                 <input
