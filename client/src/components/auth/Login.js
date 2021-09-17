@@ -37,16 +37,26 @@ const Login = () => {
       password,
     };
     // console.log(user);
+
     axios
       .post("api/users/login", user)
       .then((res) => {
+        console.log(res);
         const { token } = res.data; //  save to local storage
-        localStorage.setItem("jwtToken", token); //  set token to local storage
+        localStorage.setItem("token", token); //  set token to local storage
         setAuthToken(token); //   set token to auth header
-        const decoded = jwt_decode(token);
+        // const decoded = jwt_decode(token);
         // setCurrentUser(decoded);
         console.log(user);
         // loginUser(user);
+        axios
+          .get("api/profile", {
+            headers: { Authorization: "" + localStorage.getItem("token") },
+          })
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => console.error(err));
       })
       .catch((err) => setErrors(err.response.data));
   };

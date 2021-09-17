@@ -7,6 +7,8 @@ import Footer from "./components/layout/Footer";
 import Landing from "./components/layout/Landing";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
+import Dashboard from "./components/layout/Dashboard";
+
 // import store from "./store";
 
 import "./App.css";
