@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-const Dashboard = ({ data }) => {
+const Dashboard = () => {
+	const [data, setData] = useState([]);
 	return (
 		<div>
-			{Object.keys(data).map(key => {
+			{data.map(key => {
 				return (
 					<div key={key}>
 						<div>
