@@ -4,8 +4,8 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 import classnames from "classnames";
 
-const Login = () => {
-  const [name, setName] = useState("");
+// yaha Login component ko  jo prop pass kiya tha wo object-destructuring use karke available kiya
+const Login = ({name, setName}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
@@ -55,6 +55,8 @@ const Login = () => {
           })
           .then((res) => {
             console.log(res);
+            // jaise hi response aye, name ka value change kardiya
+            setName(res.data.handle);
           })
           .catch((err) => console.error(err));
       })
@@ -84,7 +86,7 @@ const Login = () => {
                   <div className="invalid-feedback">{errors.email}</div>
                 )}
               </div>
-              <div className="form-group">
+              <div className="form-group mt-3">
                 <input
                   type="password"
                   className={classnames("form-control form-control-lg", {
