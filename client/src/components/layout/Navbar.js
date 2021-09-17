@@ -4,43 +4,47 @@ import PropTypes from "prop-types";
 import logoutUser from "../../utils/logout";
 import axios from "axios";
 
-const Navbar = () => {
-  const [name, setName] = useState("");
+// yaha Navbar component ko  jo prop pass kiya tha wo object-destructuring use karke available kiya
+const Navbar = ({name,setName}) => {
   const [avatar, setAvatar] = useState("");
 
   const [email, setEmail] = useState("");
   const [errors, setErrors] = useState({});
   useEffect(() => {
     (async () => {
+      if(avatar == '' && localStorage.getItem("token")) // If avatar is not set, fetch user info; else dont fetch kyuki faida hi nai
       await axios
         .get("api/profile", {
           headers: { Authorization: "" + localStorage.getItem("token") },
         })
         .then((res) => {
-          console.log(res.data.user.name);
-          console.log("proxy");
-          setName(res.data.user.name);
+          console.log(res.data.user.avatar);
+          // setName(res.data.user.name);
           setAvatar(res.data.user.avatar);
         })
         .catch((err) => setErrors(err.res));
     })();
-  });
-  const authLinks = (
-    <ul className="navbar-nav ml-auto">
-      <li className="nav-item">
-        <a href="" onClick={logoutUser} className="nav-link">
-          <img
-            className="rounded-circle"
-            src={avatar}
-            alt={name}
-            style={{ width: "25px", marginRight: "5px" }}
-            title="You must have a gravatar connected to your email to display an image"
-          />{" "}
-          Logout
-        </a>
-      </li>
-    </ul>
-  );
+  }, []); // ye dependency array rakhna is good-practice
+
+  // authUser ko AuthLinks kiya aur normal variable ko  react component  bana diya kyuki usme 'avatar' ka value react change karega .
+  const AuthLinks = ({avatar})=>{ 
+    return (
+      <ul className="navbar-nav ml-auto">
+        <li className="nav-item">
+          <a href="" onClick={logoutUser} className="nav-link">
+            <img
+              className="rounded-circle"
+              src={avatar}
+              alt={name}
+              style={{ width: "25px", marginRight: "5px" }}
+              title="You must have a gravatar connected to your email to display an image"
+            />
+            Logout
+          </a>
+        </li>
+      </ul>
+    );
+  } 
   const guestLinks = (
     <ul className="navbar-nav ml-auto">
       <li className="nav-item">
@@ -80,7 +84,7 @@ const Navbar = () => {
               </Link>
             </li>
           </ul>
-          {name ? authLinks : guestLinks}
+          {name ? <AuthLinks avatar={avatar}/> : guestLinks} 
         </div>
       </div>
     </nav>
