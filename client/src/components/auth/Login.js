@@ -84,7 +84,7 @@ const Login = () => {
                   <div className="invalid-feedback">{errors.email}</div>
                 )}
               </div>
-              <div className="form-group">
+              <div className="form-group mt-3">
                 <input
                   type="password"
                   className={classnames("form-control form-control-lg", {
