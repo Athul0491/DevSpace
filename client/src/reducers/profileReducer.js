@@ -11,7 +11,7 @@ export const profileReducer = createSlice({
   reducers: {
     getProfile: (state = initialState, action) => {
       //   state.isAuthenticated = !isEmpty(action.payload);
-      state.profile = action.payload;
+      state.profile = action.payload.data;
       state.loading = false;
     },
     profileLoading: (state = initialState, action) => {
@@ -30,3 +30,5 @@ export const { profileLoading } = profileReducer.actions;
 export const { profileNotFound } = profileReducer.actions;
 export const { clearCurrentProfile } = profileReducer.actions;
 // export const { getProfiles } = profileReducer.actions;
+export const profile = (state) => state.profile.profile;
+export const loading = (state) => state.profile.loading;
