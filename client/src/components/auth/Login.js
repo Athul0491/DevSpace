@@ -1,66 +1,68 @@
 import React, { useState, useEffect } from "react";
-import setAuthToken from "../../utils/setAuthToken";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import classnames from "classnames";
+import { useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { Redirect } from "react-router-dom";
 
-// yaha Login component ko  jo prop pass kiya tha wo object-destructuring use karke available kiya
-const Login = ({name, setName}) => {
+import setAuthToken from "../../utils/setAuthToken";
+import { isAuth, user } from "../../reducers/authReducer";
+import { setCurrentUser } from "../../reducers/authReducer";
+import { setCurrentError } from "../../reducers/errorReducer";
+// import InputFieldGroup from "../reusable/InputFieldGroup";
+
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const dispatch = useDispatch();
+  const auth = useSelector(isAuth);
+  const User = useSelector(user);
   const changeEmail = (e) => {
     setEmail(e.target.value);
   };
   const changePassword = (e) => {
     setPassword(e.target.value);
   };
-  // export const CurrentUserContext = React.createContext()
+  const history = useHistory();
+  // useEffect(() => {
+  //   const navigate = async () => {
+  //     // const authorized = await isAuthenticated();
+  //     // const token = "" + localStorage.getItem("token");
 
-  // export const CurrentUserProvider = ({ children }) => {
-  //   const [currentUser, setCurrentUser] = React.useState(null)
+  //     // console.log(auth);
+  //     // Authenticated(isAuthenticated);
+  //     if (auth) {
+  //       history.push("/dashboard");
+  //     }
+  //   };
 
-  //   const fetchCurrentUser = async () => {
-  //     let response = await fetch("/api/users/current")
-  //     response = await response.json()
-  //     setCurrentUser(response)
-  //   }
-  // useEffect((props) => {
-  //   if (props.errors) {
-  //     setErrors(props.errors);
-  //   }
+  //   // call the async function
+  //   navigate();
   // });
   const handleSubmit = (e) => {
     e.preventDefault();
-    const user = {
+    const newUser = {
       email,
       password,
     };
     // console.log(user);
 
     axios
-      .post("api/users/login", user)
+      .post("api/users/login", newUser)
       .then((res) => {
-        console.log(res);
-        const { token } = res.data; //  save to local storage
+        // console.log(res);
+        const token = res.data.token; //  save to local storage
         localStorage.setItem("token", token); //  set token to local storage
         setAuthToken(token); //   set token to auth header
-        // const decoded = jwt_decode(token);
-        // setCurrentUser(decoded);
-        console.log(user);
-        // loginUser(user);
-        axios
-          .get("api/profile", {
-            headers: { Authorization: "" + localStorage.getItem("token") },
-          })
-          .then((res) => {
-            console.log(res);
-            // jaise hi response aye, name ka value change kardiya
-            setName(res.data.handle);
-          })
-          .catch((err) => console.error(err));
+
+        const decoded = jwt_decode(token);
+        // Set current user
+        dispatch(setCurrentUser(decoded));
+        history.push("/dashboard");
       })
-      .catch((err) => setErrors(err.response.data));
+      .catch((err) => dispatch(setCurrentError(err.response.data)));
   };
 
   return (
@@ -111,3 +113,7 @@ const Login = ({name, setName}) => {
 };
 
 export default Login;
+
+// if (!isEmpty(token)) {
+//   history.push("/dashboard");
+// }

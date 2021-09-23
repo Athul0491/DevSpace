@@ -1,19 +1,26 @@
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-
 import axios from "axios";
 import classnames from "classnames";
-import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+
+import { setCurrentUser, isAuth } from "../../reducers/authReducer";
+import { setCurrentError, error } from "../../reducers/errorReducer";
 
 const Register = () => {
+  const dispatch = useDispatch();
+  // const auth = useSelector((state) => state.auth);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
   const [errors, setErrors] = useState({});
-
+  const [authe, setAuthe] = useState(false);
+  const auth = useSelector(isAuth);
+  // const user = useSelector(user);
+  const history = useHistory();
   // useEffect(() => {
-  //   if (errors) {
+  //   if (errors) {s
   //     setErrors({ errors });
   //   }
   // });
@@ -31,6 +38,26 @@ const Register = () => {
     setPassword2(e.target.value);
   };
 
+  // errors = useSelector((state) => {
+  //   state.errors;
+  // });
+
+  // useEffect(() => {
+  //   const navigate = async () => {
+  //     // const authorized = await isAuthenticated();
+  //     // const token = "" + localStorage.getItem("token");
+
+  //     // console.log(auth);
+  //     // Authenticated(isAuthenticated);
+  //     if (auth) {
+  //       history.push("/dashboard");
+  //     }
+  //   };
+
+  //   // call the async function
+  //   navigate();
+  // });
+  //982O480387
   const handleSubmit = (e) => {
     e.preventDefault();
     const newUser = {
@@ -39,15 +66,23 @@ const Register = () => {
       password,
       password2,
     };
-
-    // registerUser(newUser);
-
+    // setAuthe(true);
+    // RegisterUser(newUser);
     axios
-      .post("api/users/register", newUser)
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => setErrors(err.response.data));
+      .post("/api/users/register", newUser)
+      .then((res) => history.push("/login"))
+      .catch((err) => dispatch(setCurrentError(err.response.data)));
+
+    // dispatch({
+    //   type: GET_ERRORS,
+    //   payload: err.response.data,
+    // });
+    //   axios
+    //     .post("api/users/register", newUser)
+    //     .then((res) => {
+    //       console.log(res.data);
+    //     })
+    //     .catch((err) => setErrors(err.response.data));
   };
   // const errors = errors;
   // const { user } = auth;
@@ -132,5 +167,9 @@ const Register = () => {
     </div>
   );
 };
+// const mapStateToProps = (state) => ({
+//   auth: state.auth,
+//   errors: state.errors,
+// });
 
 export default Register;

@@ -1,50 +1,71 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
-import logoutUser from "../../utils/logout";
-import axios from "axios";
+import { useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { Redirect } from "react-router-dom";
 
-// yaha Navbar component ko  jo prop pass kiya tha wo object-destructuring use karke available kiya
-const Navbar = ({name,setName}) => {
-  const [avatar, setAvatar] = useState("");
+import { isAuth, user } from "../../reducers/authReducer";
+import { setCurrentUser } from "../../reducers/authReducer";
+import { clearCurrentProfile } from "../../reducers/profileReducer";
+import setAuthToken from "../../utils/setAuthToken";
 
-  const [email, setEmail] = useState("");
-  const [errors, setErrors] = useState({});
-  useEffect(() => {
-    (async () => {
-      if(avatar == '' && localStorage.getItem("token")) // If avatar is not set, fetch user info; else dont fetch kyuki faida hi nai
-      await axios
-        .get("api/profile", {
-          headers: { Authorization: "" + localStorage.getItem("token") },
-        })
-        .then((res) => {
-          console.log(res.data.user.avatar);
-          // setName(res.data.user.name);
-          setAvatar(res.data.user.avatar);
-        })
-        .catch((err) => setErrors(err.res));
-    })();
-  }, []); // ye dependency array rakhna is good-practice
+const Navbar = () => {
+  // const [avatar, setAvatar] = useState("");
+  const [authe, setAuthe] = useState("");
+  const [usere, setUsere] = useState("");
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const auth = useSelector(isAuth);
+  const User = useSelector(user);
+  const logout = (e) => {
+    e.preventDefault();
+    localStorage.removeItem("jwtToken");
+    // Remove auth header for future requests
+    setAuthToken(false);
+    // Set current user to {} which will set isAuthenticated to false
+    dispatch(setCurrentUser({}));
+    dispatch(clearCurrentProfile());
+    history.push("/login");
+    // auth = false;
+  };
+  // useEffect(() => {
+  //   console.log(auth);
+  //   console.log(User);
 
+  //   // const navigate = async () => {
+  //   //   //   // const authorized = await isAuthenticated();
+  //   //   //   // const token = "" + localStorage.getItem("token");
+  //   //   //   // console.log(auth);
+  //   //   if (auth !== undefined) {
+  //   //     setAuthe(auth);
+  //   //   }
+  //   //   if (User !== undefined && User !== {}) {
+  //   //     setUsere(User);
+  //   //     // console.log(User);
+  //   //   }
+  //   // };
+  //   // navigate();
+  //   // call the async function
+  //   // return () => clearTimeout(navigate);
+  // });
   // authUser ko AuthLinks kiya aur normal variable ko  react component  bana diya kyuki usme 'avatar' ka value react change karega .
-  const AuthLinks = ({avatar})=>{ 
-    return (
-      <ul className="navbar-nav ml-auto">
-        <li className="nav-item">
-          <a href="" onClick={logoutUser} className="nav-link">
-            <img
-              className="rounded-circle"
-              src={avatar}
-              alt={name}
-              style={{ width: "25px", marginRight: "5px" }}
-              title="You must have a gravatar connected to your email to display an image"
-            />
-            Logout
-          </a>
-        </li>
-      </ul>
-    );
-  } 
+  const authLinks = (
+    <ul className="navbar-nav ml-auto">
+      <li className="nav-item">
+        <a href="" onClick={logout} className="nav-link">
+          <img
+            className="rounded-circle"
+            src={User.avatar}
+            alt={User.name}
+            style={{ width: "25px", marginRight: "5px" }}
+            title="You must have a gravatar connected to your email to display an image"
+          />{" "}
+          Logout
+        </a>
+      </li>
+    </ul>
+  );
+
   const guestLinks = (
     <ul className="navbar-nav ml-auto">
       <li className="nav-item">
@@ -84,7 +105,8 @@ const Navbar = ({name,setName}) => {
               </Link>
             </li>
           </ul>
-          {name ? <AuthLinks avatar={avatar}/> : guestLinks} 
+
+          {auth ? authLinks : guestLinks}
         </div>
       </div>
     </nav>
