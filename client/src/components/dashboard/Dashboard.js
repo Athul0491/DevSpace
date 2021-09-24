@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { setCurrentUser } from "../../reducers/authReducer";
 import { setCurrentError } from "../../reducers/errorReducer";
+import classnames from "classnames";
 
 import { profileLoading } from "../../reducers/profileReducer";
 import { setProfile } from "../../reducers/profileReducer";
