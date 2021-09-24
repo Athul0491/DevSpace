@@ -8,6 +8,8 @@ import { setCurrentUser, isAuth } from "../../reducers/authReducer";
 import { setCurrentError, error } from "../../reducers/errorReducer";
 
 const Register = () => {
+  const Error = useSelector(error);
+
   const dispatch = useDispatch();
   // const auth = useSelector((state) => state.auth);
   const [name, setName] = useState("");
@@ -37,7 +39,16 @@ const Register = () => {
   const changePassword2 = (e) => {
     setPassword2(e.target.value);
   };
+  useEffect(() => {
+    const getError = async () => {
+      if (Error) {
+        setErrors(Error);
+      }
+    };
 
+    // call the async function
+    getError();
+  });
   // errors = useSelector((state) => {
   //   state.errors;
   // });

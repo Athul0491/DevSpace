@@ -5,20 +5,23 @@ import classnames from "classnames";
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
+import { error } from "../../reducers/errorReducer";
 
 import setAuthToken from "../../utils/setAuthToken";
-import { isAuth, user } from "../../reducers/authReducer";
+// import { isAuth, user } from "../../reducers/authReducer";
 import { setCurrentUser } from "../../reducers/authReducer";
 import { setCurrentError } from "../../reducers/errorReducer";
 // import InputFieldGroup from "../reusable/InputFieldGroup";
+import { setProfile } from "../../reducers/profileReducer";
 
 const Login = () => {
+  const Error = useSelector(error);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
-  const auth = useSelector(isAuth);
-  const User = useSelector(user);
+
   const changeEmail = (e) => {
     setEmail(e.target.value);
   };
@@ -41,6 +44,16 @@ const Login = () => {
   //   // call the async function
   //   navigate();
   // });
+  useEffect(() => {
+    const getError = async () => {
+      if (Error) {
+        setErrors(Error);
+      }
+    };
+
+    // call the async function
+    getError();
+  });
   const handleSubmit = (e) => {
     e.preventDefault();
     const newUser = {
@@ -52,7 +65,7 @@ const Login = () => {
     axios
       .post("api/users/login", newUser)
       .then((res) => {
-        // console.log(res);
+        console.log(res);
         const token = res.data.token; //  save to local storage
         localStorage.setItem("token", token); //  set token to local storage
         setAuthToken(token); //   set token to auth header
@@ -60,9 +73,10 @@ const Login = () => {
         const decoded = jwt_decode(token);
         // Set current user
         dispatch(setCurrentUser(decoded));
+        dispatch(setProfile({}));
         history.push("/dashboard");
       })
-      .catch((err) => dispatch(setCurrentError(err.response.data)));
+      .catch((err) => dispatch(setCurrentError(err)));
   };
 
   return (

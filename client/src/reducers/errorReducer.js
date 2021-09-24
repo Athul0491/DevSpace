@@ -19,6 +19,6 @@ export const errorReducer = createSlice({
     },
   },
 });
-export const error = (store) => store;
+export const error = (store) => store.error.error;
 export const { setCurrentError } = errorReducer.actions;
 export default errorReducer.reducer;

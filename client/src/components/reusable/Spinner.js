@@ -1,4 +1,4 @@
-import react from "react";
+import React from "react";
 import spinner from "./spinner.gif";
 const Spinner = () => {
   return (

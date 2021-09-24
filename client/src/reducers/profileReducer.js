@@ -9,23 +9,31 @@ export const profileReducer = createSlice({
   name: "profile",
   initialState,
   reducers: {
-    getProfile: (state = initialState, action) => {
+    setProfile: (state = initialState, action) => {
       //   state.isAuthenticated = !isEmpty(action.payload);
-      state.profile = action.payload.data;
+      if (action.payload.data) {
+        state.profile = action.payload.data;
+        state.loading = false;
+      } else {
+        state.profile = {};
+        state.loading = false;
+      }
       state.loading = false;
     },
     profileLoading: (state = initialState, action) => {
       state.loading = true;
     },
     profileNotFound: (state = initialState, action) => {},
-    clearCurrentProfile: (state = initialState, action) => {
+    clearCurrentProfile: (state = initialState) => {
       state.profile = null;
+      state.profiles = null;
+      state.loading = false;
     },
     getProfiles: (state = initialState, action) => {},
   },
 });
 export default profileReducer.reducer;
-export const { getProfile } = profileReducer.actions;
+export const { setProfile } = profileReducer.actions;
 export const { profileLoading } = profileReducer.actions;
 export const { profileNotFound } = profileReducer.actions;
 export const { clearCurrentProfile } = profileReducer.actions;

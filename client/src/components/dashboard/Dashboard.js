@@ -2,24 +2,67 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { setCurrentUser } from "../../reducers/authReducer";
+import { setCurrentError } from "../../reducers/errorReducer";
 
 import { profileLoading } from "../../reducers/profileReducer";
-import { getProfile } from "../../reducers/profileReducer";
-import { user } from "../../reducers/authReducer";
+import { setProfile } from "../../reducers/profileReducer";
+import { isAuth, user } from "../../reducers/authReducer";
 import { profile, loading } from "../../reducers/profileReducer";
 import Spinner from "../reusable/Spinner";
 
 const Dashboard = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const User = useSelector(user);
+  const Auth = useSelector(isAuth);
   const Profile = useSelector(profile);
   const Loading = useSelector(loading);
+  const onDelete = (e) => {
+    // deleteAccount();
+    if (window.confirm("Are you sure? This cannot be undone!")) {
+      axios
+        .delete("/api/profile")
+        .then((res) => dispatch(setCurrentUser({})))
+        .catch((err) => dispatch(setCurrentError(err)));
+    }
+  };
   let dashboardContent;
+  if (!Auth) {
+    history.push("/login");
+  }
   if (Profile === null || Loading) {
     dashboardContent = <Spinner />;
   } else {
     if (Profile && Object.keys(Profile).length > 0) {
-      dashboardContent = <h4> brrrr</h4>;
+      dashboardContent = (
+        <div>
+          <p className="lead text-muted">
+            {" "}
+            Welcome{" "}
+            <Link to="{`/profile/${profile.handle}`}"> {User.name}</Link>
+          </p>
+          <div className="btn-group mb-4" role="group">
+            <Link to="/edit-profile" className="btn btn-light">
+              <i className="fas fa-user-circle text-info mr-1" /> Edit Profile
+            </Link>
+            <Link to="/add-experience" className="btn btn-light">
+              <i className="fab fa-black-tie text-info mr-1"></i>
+              Add Experience
+            </Link>
+            <Link to="/add-education" className="btn btn-light">
+              <i className="fas fa-graduation-cap text-info mr-1"></i>
+              Add Education
+            </Link>
+          </div>
+
+          <div style={{ marginBottom: "60px" }} />
+          <button onClick={onDelete} className="btn btn-danger">
+            Delete My Account
+          </button>
+        </div>
+      );
       console.log(Profile);
     } else {
       console.log(Profile);
@@ -41,11 +84,11 @@ const Dashboard = () => {
     axios
       .get("/api/profile")
       .then((res) => {
-        dispatch(getProfile(res));
+        dispatch(setProfile(res));
         // console.log(res);
       })
       .catch((err) => {
-        dispatch(getProfile({}));
+        dispatch(setProfile({}));
       });
   }, []);
   return (
