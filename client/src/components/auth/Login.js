@@ -65,7 +65,7 @@ const Login = () => {
     axios
       .post("api/users/login", newUser)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         const token = res.data.token; //  save to local storage
         localStorage.setItem("token", token); //  set token to local storage
         setAuthToken(token); //   set token to auth header
@@ -76,7 +76,7 @@ const Login = () => {
         dispatch(setProfile({}));
         history.push("/dashboard");
       })
-      .catch((err) => dispatch(setCurrentError(err)));
+      .catch((err) => dispatch(setCurrentError(err.response.data)));
   };
 
   return (

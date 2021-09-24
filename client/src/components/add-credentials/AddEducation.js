@@ -8,14 +8,14 @@ import { isAuth } from "../../reducers/authReducer";
 import { setCurrentError } from "../../reducers/errorReducer";
 import axios from "axios";
 
-const AddExperience = () => {
+const AddEducation = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const Error = useSelector(error);
   const Auth = useSelector(isAuth);
-  const [company, setCompany] = useState("");
-  const [title, setTitle] = useState("");
-  const [location, setLocation] = useState("");
+  const [school, setSchool] = useState("");
+  const [degree, setDegree] = useState("");
+  const [fieldofstudy, setFieldofstudy] = useState("");
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [current, setCurrent] = useState(false);
@@ -25,11 +25,11 @@ const AddExperience = () => {
   if (!Auth) {
     history.push("/login");
   }
-  const changeCompany = (e) => {
-    setCompany(e.target.value);
+  const changeSchool = (e) => {
+    setSchool(e.target.value);
   };
-  const changeTitle = (e) => {
-    setTitle(e.target.value);
+  const changeDegree = (e) => {
+    setDegree(e.target.value);
   };
   const changeFrom = (e) => {
     setFrom(e.target.value);
@@ -37,8 +37,8 @@ const AddExperience = () => {
   const changeTo = (e) => {
     setTo(e.target.value);
   };
-  const changeLocation = (e) => {
-    setLocation(e.target.value);
+  const changeFieldofstudy = (e) => {
+    setFieldofstudy(e.target.value);
   };
   const onCheck = (e) => {
     setDisabled(!disabled);
@@ -60,32 +60,32 @@ const AddExperience = () => {
   });
   const handleSubmit = (e) => {
     e.preventDefault();
-    const expData = {
-      company: company,
-      title: title,
-      location: location,
+    const eduData = {
+      school: school,
+      degree: degree,
+      fieldofstudy: fieldofstudy,
       from: from,
       to: to,
       current: current,
       description: description,
     };
     axios
-      .post("/api/profile/experience", expData)
+      .post("/api/profile/education", eduData)
       .then((res) => history.push("/dashboard"))
       .catch((err) => dispatch(setCurrentError(err.response.data)));
   };
   return (
     <div>
-      <div className="add-experience">
+      <div className="add-education">
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
               <Link to="/dashboard" className="btn btn-light">
                 Go Back
               </Link>
-              <h1 className="display-4 text-center">Add Experience</h1>
+              <h1 className="display-4 text-center">Add Education</h1>
               <p className="lead text-center">
-                Add any job or position that you have had in the past or current
+                Add any school, bootcamp you have attended
               </p>
               <small className="d-block pb-3">* = required fields</small>
               <form onSubmit={handleSubmit}>
@@ -93,48 +93,50 @@ const AddExperience = () => {
                 <div className="form-group">
                   <input
                     className={classnames("form-control form-control-lg", {
-                      "is-invalid": errors.company,
+                      "is-invalid": errors.school,
                     })}
-                    placeholder="Company"
-                    name="company"
-                    value={company}
-                    onChange={changeCompany}
+                    placeholder="* School"
+                    name="school"
+                    value={school}
+                    onChange={changeSchool}
                   />
 
-                  {errors.company && (
-                    <div className="invalid-feedback">{errors.company}</div>
+                  {errors.school && (
+                    <div className="invalid-feedback">{errors.school}</div>
                   )}
                 </div>
                 {/* job title */}
                 <div className="form-group">
                   <input
                     className={classnames("form-control form-control-lg", {
-                      "is-invalid": errors.title,
+                      "is-invalid": errors.degree,
                     })}
-                    placeholder="Job title"
-                    name="title"
-                    value={title}
-                    onChange={changeTitle}
+                    placeholder="* Degree or Certification"
+                    name="degree"
+                    value={degree}
+                    onChange={changeDegree}
                   />
 
-                  {errors.title && (
-                    <div className="invalid-feedback">{errors.title}</div>
+                  {errors.degree && (
+                    <div className="invalid-feedback">{errors.degree}</div>
                   )}
                 </div>
                 {/* location */}
                 <div className="form-group">
                   <input
                     className={classnames("form-control form-control-lg", {
-                      "is-invalid": errors.location,
+                      "is-invalid": errors.fieldofstudy,
                     })}
                     placeholder="Location"
-                    name="location"
-                    value={location}
-                    onChange={changeLocation}
+                    name="fieldofstudy"
+                    value={fieldofstudy}
+                    onChange={changeFieldofstudy}
                   />
 
-                  {errors.location && (
-                    <div className="invalid-feedback">{errors.location}</div>
+                  {errors.fieldofstudy && (
+                    <div className="invalid-feedback">
+                      {errors.fieldofstudy}
+                    </div>
                   )}
                 </div>
                 {/* from */}
@@ -192,10 +194,11 @@ const AddExperience = () => {
                     className={classnames("form-control form-control-lg", {
                       "is-invalid": errors.description,
                     })}
-                    placeholder="Job Description"
+                    placeholder="Program Description"
                     name="description"
                     value={description}
                     onChange={changeDescription}
+                    info="Tell us about the program you were in"
                   />
 
                   {errors.description && (
@@ -215,4 +218,4 @@ const AddExperience = () => {
     </div>
   );
 };
-export default AddExperience;
+export default AddEducation;

@@ -11,6 +11,8 @@ import Dashboard from "./components/dashboard/Dashboard";
 import CreateProfile from "./components/create-profile/CreateProfile";
 import EditProfile from "./components/edit-profile/EditProfile";
 import AddExperience from "./components/add-credentials/AddExperience";
+import AddEducation from "./components/add-credentials/AddEducation";
+
 import "./App.css";
 
 const App = () => {
@@ -34,6 +36,7 @@ const App = () => {
           <Route exact path="/create-profile" component={CreateProfile} />
           <Route exact path="/edit-profile" component={EditProfile} />
           <Route exact path="/add-experience" component={AddExperience} />
+          <Route exact path="/add-education" component={AddEducation} />
         </div>
         <Footer />
       </div>
