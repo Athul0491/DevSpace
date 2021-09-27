@@ -78,7 +78,7 @@ const Dashboard = () => {
       );
       // console.log(Profile);
     } else {
-      console.log(Profile);
+      // console.log(Profile);
       dashboardContent = (
         <div>
           <p className="lead text-muted"> Welcome {User.name}</p>
@@ -117,5 +117,5 @@ const Dashboard = () => {
     </div>
   );
 };
-<h1>dashboard</h1>;
+
 export default Dashboard;
