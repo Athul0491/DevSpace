@@ -235,7 +235,12 @@ router.delete(
         profile.experience.splice(removeIndex, 1);
 
         //save
-        profile.save().then((profile) => res.json(profile));
+        profile
+          .save()
+          .then((profile) => res.json(profile))
+          .catch((err) => {
+            console.error(err);
+          });
       })
       .catch((err) => res.status(400).json(err));
   }

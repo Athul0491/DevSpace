@@ -12,7 +12,7 @@ import CreateProfile from "./components/create-profile/CreateProfile";
 import EditProfile from "./components/edit-profile/EditProfile";
 import AddExperience from "./components/add-credentials/AddExperience";
 import AddEducation from "./components/add-credentials/AddEducation";
-
+// import Todo from "./Todo";
 import "./App.css";
 
 const App = () => {
@@ -40,6 +40,7 @@ const App = () => {
         </div>
         <Footer />
       </div>
+      {/* <Todo /> */}
     </Router>
   );
 };

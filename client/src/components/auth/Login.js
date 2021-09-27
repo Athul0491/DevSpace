@@ -63,7 +63,7 @@ const Login = () => {
     // console.log(user);
 
     axios
-      .post("api/users/login", newUser)
+      .post("/api/users/login", newUser)
       .then((res) => {
         // console.log(res);
         const token = res.data.token; //  save to local storage
@@ -73,7 +73,7 @@ const Login = () => {
         const decoded = jwt_decode(token);
         // Set current user
         dispatch(setCurrentUser(decoded));
-        dispatch(setProfile({}));
+        // dispatch(setProfile({}));
         history.push("/dashboard");
       })
       .catch((err) => dispatch(setCurrentError(err.response.data)));

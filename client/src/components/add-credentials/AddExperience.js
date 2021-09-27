@@ -7,6 +7,7 @@ import classnames from "classnames";
 import { isAuth } from "../../reducers/authReducer";
 import { setCurrentError } from "../../reducers/errorReducer";
 import axios from "axios";
+import { setProfile } from "../../reducers/profileReducer";
 
 const AddExperience = () => {
   const dispatch = useDispatch();
@@ -61,17 +62,21 @@ const AddExperience = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const expData = {
-      company: company,
-      title: title,
-      location: location,
-      from: from,
-      to: to,
-      current: current,
-      description: description,
+      company,
+      current,
+      description,
+      from,
+      location,
+      title,
+      to,
     };
+    console.log(expData);
     axios
       .post("/api/profile/experience", expData)
-      .then((res) => history.push("/dashboard"))
+      .then((res) => {
+        history.push("/dashboard");
+        dispatch(setProfile(res.data));
+      })
       .catch((err) => dispatch(setCurrentError(err.response.data)));
   };
   return (

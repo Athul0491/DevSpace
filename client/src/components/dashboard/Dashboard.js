@@ -6,6 +6,8 @@ import { useHistory } from "react-router-dom";
 import { setCurrentUser } from "../../reducers/authReducer";
 import { setCurrentError } from "../../reducers/errorReducer";
 import classnames from "classnames";
+import Experience from "./Experience";
+import Education from "./Education";
 
 import { profileLoading } from "../../reducers/profileReducer";
 import { setProfile } from "../../reducers/profileReducer";
@@ -25,7 +27,10 @@ const Dashboard = () => {
     if (window.confirm("Are you sure? This cannot be undone!")) {
       axios
         .delete("/api/profile")
-        .then((res) => dispatch(setCurrentUser({})))
+        .then((res) => {
+          dispatch(setCurrentUser({}));
+          // history.push("/dashboard");
+        })
         .catch((err) => dispatch(setCurrentError(err)));
     }
   };
@@ -44,6 +49,7 @@ const Dashboard = () => {
             Welcome{" "}
             <Link to="{`/profile/${profile.handle}`}"> {User.name}</Link>
           </p>
+
           <div className="btn-group mb-4" role="group">
             <Link to="/edit-profile" className="btn btn-light">
               <i className="fas fa-user-circle text-info mr-1" /> Edit Profile
@@ -57,14 +63,20 @@ const Dashboard = () => {
               Add Education
             </Link>
           </div>
-
+          <Experience experience={Profile.experience} />
+          <Education education={Profile.education} />
           <div style={{ marginBottom: "60px" }} />
-          <button onClick={onDelete} className="btn btn-danger">
+          <button
+            onClick={() => {
+              onDelete();
+            }}
+            className="btn btn-danger"
+          >
             Delete My Account
           </button>
         </div>
       );
-      console.log(Profile);
+      // console.log(Profile);
     } else {
       console.log(Profile);
       dashboardContent = (
