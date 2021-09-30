@@ -1,5 +1,7 @@
 # DevSpace
 
+> Social network for developers
+
 ### Technologies Used
 
 - ReactJs
