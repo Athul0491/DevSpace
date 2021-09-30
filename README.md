@@ -9,6 +9,7 @@
 - Express
 - Node.js
 - VSCode
+- Postman
 
 ### Things Learned
 
