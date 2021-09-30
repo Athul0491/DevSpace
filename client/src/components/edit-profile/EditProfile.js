@@ -66,18 +66,39 @@ const CreateProfile = () => {
       Profile.bio = !isEmpty(Prof.bio) ? Prof.bio : "";
       Profile.skills = !isEmpty(Prof.skills) ? Prof.skills : "";
       Profile.social = !isEmpty(Prof.social) ? Prof.social : {};
+      Profile.social.twitter = !isEmpty(Prof.social.twitter)
+        ? Prof.social.twitter
+        : "";
+      Profile.social.linkedin = !isEmpty(Prof.social.linkedin)
+        ? Prof.social.linkedin
+        : "";
+      Profile.social.facebook = !isEmpty(Prof.social.facebook)
+        ? Prof.social.facebook
+        : "";
+      Profile.social.youtube = !isEmpty(Prof.social.youtube)
+        ? Prof.social.youtube
+        : "";
+      Profile.social.instagram = !isEmpty(Prof.social.instagram)
+        ? Prof.social.instagram
+        : "";
       if (Profile.social) {
-        Profile.twitter = Prof.social.twitter ? Prof.social.twitter : "";
-        Profile.facebook = Prof.social.facebook ? Prof.social.facebook : "";
-        Profile.linkedin = Prof.social.linkedin ? Prof.social.linkedin : "";
-        Profile.instagram = Prof.social.instagram ? Prof.social.instagram : "";
-        Profile.youtube = Prof.social.youtube ? Prof.social.youtube : "";
+        Profile.social.twitter = Prof.social.twitter ? Prof.social.twitter : "";
+        Profile.social.facebook = Prof.social.facebook
+          ? Prof.social.facebook
+          : "";
+        Profile.social.linkedin = Prof.social.linkedin
+          ? Prof.social.linkedin
+          : "";
+        Profile.social.instagram = Prof.social.instagram
+          ? Prof.social.instagram
+          : "";
+        Profile.social.youtube = Prof.social.youtube ? Prof.social.youtube : "";
       } else {
-        Profile.twitter = "";
-        Profile.facebook = "";
-        Profile.instagram = "";
-        Profile.youtube = "";
-        Profile.linkedin = "";
+        Profile.social.twitter = "";
+        Profile.social.facebook = "";
+        Profile.social.instagram = "";
+        Profile.social.youtube = "";
+        Profile.social.linkedin = "";
       }
     }
     setCompany(Profile.company);

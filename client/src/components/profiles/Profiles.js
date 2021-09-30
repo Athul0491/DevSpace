@@ -6,33 +6,15 @@ import isEmpty from "../../utils/isEmpty";
 import { setProfiles } from "../../reducers/profileReducer";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
-import { profile, profiles, loading } from "../../reducers/profileReducer";
+import { loading } from "../../reducers/profileReducer";
 import { profileLoading } from "../../reducers/profileReducer";
-import { useHistory } from "react-router-dom";
 
 const Profiles = () => {
   const Loading = useSelector(loading);
   const dispatch = useDispatch();
-  const history = useHistory();
   const [pro, setPro] = useState([]);
-  const Profile = useSelector(profile);
-  //   useEffect(() => {
-  //     // Runs after the first render() lifecycle
-  //     // get current profile
-  //     dispatch(profileLoading());
-  //     axios
-  //       .get("/api/profile/all")
-  //       .then((res) => {
-  //         dispatch(setProfiles(res));
-  //         // console.log(res);
-  //       })
-  //       .catch((err) => {
-  //         dispatch(setProfiles());
-  //       });
-  //   }, []);
 
   const Profiles = pro;
-  //   const Profiles = useSelector(profiles);
   let profileItems;
 
   if (Profiles === null || Loading) {

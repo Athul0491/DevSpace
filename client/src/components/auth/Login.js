@@ -4,7 +4,6 @@ import jwt_decode from "jwt-decode";
 import classnames from "classnames";
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { Redirect } from "react-router-dom";
 import { error } from "../../reducers/errorReducer";
 
 import setAuthToken from "../../utils/setAuthToken";
@@ -12,7 +11,6 @@ import setAuthToken from "../../utils/setAuthToken";
 import { setCurrentUser } from "../../reducers/authReducer";
 import { setCurrentError } from "../../reducers/errorReducer";
 // import InputFieldGroup from "../reusable/InputFieldGroup";
-import { setProfile } from "../../reducers/profileReducer";
 
 const Login = () => {
   const Error = useSelector(error);

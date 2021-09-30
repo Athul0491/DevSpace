@@ -4,7 +4,7 @@ import classnames from "classnames";
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
-import { setCurrentUser, isAuth } from "../../reducers/authReducer";
+import { isAuth } from "../../reducers/authReducer";
 import { setCurrentError, error } from "../../reducers/errorReducer";
 
 const Register = () => {
@@ -17,8 +17,6 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
   const [errors, setErrors] = useState({});
-  const [authe, setAuthe] = useState(false);
-  const auth = useSelector(isAuth);
   // const user = useSelector(user);
   const history = useHistory();
   // useEffect(() => {

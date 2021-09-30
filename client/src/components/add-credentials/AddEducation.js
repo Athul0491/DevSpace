@@ -186,7 +186,7 @@ const AddEducation = () => {
                     id="current"
                   />
                   <label htmlFor="current" className="form-check-label">
-                    Current Job
+                    Current Program
                   </label>
                 </div>
                 <div className="form-group">
