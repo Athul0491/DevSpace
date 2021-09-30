@@ -65,3 +65,5 @@ To run the project locally, run the following command at the root of DevSpace:
 ```bash
 $ npm run dev
 ```
+
+### Note: The project is still under development, some features may not work yet. Thank you!
