@@ -4,7 +4,7 @@
 
 <a href="https://github.com/Athul0491/"><img width="15%" height="auto" alt="LinkedIn" src="https://img.shields.io/github/languages/code-size/Athul0491/DevSpace?logo=github&style=for-the-badge"></a>
 <a href="https://github.com/Athul0491/"><img width="11%" height="" alt="" src="https://img.shields.io/github/languages/count/Athul0491/DevSpace?style=for-the-badge"></a>
-<a href="https://github.com/Athul0491/"><img width="17%" height="" alt="" src="https://img.shields.io/github/last-commit/Athul0491/DevSpace?style=for-the-badge&logo=git"></a>
+<a href="https://github.com/Athul0491/"><img width="20%" height="auto" alt="" src="https://img.shields.io/github/last-commit/Athul0491/DevSpace?style=for-the-badge&logo=git"></a>
 ### Technologies Used
 
 - ReactJs
